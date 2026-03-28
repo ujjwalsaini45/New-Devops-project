@@ -10,7 +10,7 @@ node {
         echo 'Cloning the repo'
         git(
             branch: 'main',
-            url: 'https://github.com/ujjwalsaini45/New-Devops-project'
+            url: 'https://github.com/ujjwalsaini45/New-Devops-project.git'
         )
     }
 
@@ -23,13 +23,12 @@ node {
             rsync -av --delete --exclude='.git' --exclude='node_modules' ./ ${appDir}
 
             cd ${appDir}
-            sudo npm install
-            sudo npm run build
-            sudo fuser -k 3000/tcp || true
-            npm run start
+            npm install
+            npm run build
 
-
-           
+            pm2 delete nextjs-app || true
+            pm2 start npm --name "nextjs-app" -- start
+            pm2 save
         """
     }
 }
