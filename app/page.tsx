@@ -47,7 +47,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Read our docs 10 101
+            Read our docs 10 101 gg
           </a>
         </div>
       </main>
