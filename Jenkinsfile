@@ -1,34 +1,22 @@
-node {
-    def appDir = '/var/www/nextjs-app'
+stage('Deploy'){
+    echo 'Deploying app'
+    sh """
+        sudo mkdir -p ${appDir}
+        sudo chown -R jenkins:jenkins ${appDir}
 
-    stage('Clean Workspace'){
-        echo 'Cleaning Jenkins Workspace'
-        deleteDir()
-    }
+        rsync -av --delete --exclude='.git' --exclude='node_modules' ./ ${appDir}
 
-    stage('Clone Repo'){
-        echo 'Cloning the repo'
-        git(
-            branch: 'main',
-            url: 'https://github.com/ujjwalsaini45/New-Devops-project.git'
-        )
-    }
+        cd ${appDir}
 
-    stage('Deploy'){
-        echo 'Deploying app'
-        sh """
-            sudo mkdir -p ${appDir}
-            sudo chown -R jenkins:jenkins ${appDir}
+        # Fix permissions
+        sudo rm -rf .next
+        sudo chown -R jenkins:jenkins ${appDir}
 
-            rsync -av --delete --exclude='.git' --exclude='node_modules' ./ ${appDir}
+        # Install & build WITHOUT sudo
+        npm install
+        npm run build
 
-            cd ${appDir}
-            npm install
-            npm run build
-
-            pm2 delete nextjs-app || true
-            pm2 start npm --name "nextjs-app" -- start
-            pm2 save
-        """
-    }
+        pm2 delete nextjs-app || true
+        pm2 start npm --name "nextjs-app" -- start
+    """
 }
