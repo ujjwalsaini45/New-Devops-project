@@ -37,3 +37,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 hey this project is about making build automatically through jenkins first step we push code then github webhook send notification to jenkins > jenkins make a build file automatically whole project is about automation
+
+
+DevOps Tutorial #112: CI/CD Pipeline with Jenkins, Docker, AWS EC2, GitHub & Email for NestJS App
